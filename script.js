@@ -5,6 +5,7 @@ let globalClickCount = 0;
 let comboActive = false;
 let lastClickTime = 0;
 let comboTimeout = null;
+let clickStreak = 0;
 
 const authSection = document.getElementById('auth');
 const gameSection = document.getElementById('game');
@@ -17,7 +18,6 @@ const usernameInput = document.getElementById('username');
 const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
 const floatingNumbersContainer = document.getElementById('floating-numbers');
-const comboDisplay = document.getElementById('combo-display');
 
 function updateStats() {
   userStatsTableBody.innerHTML = '';
@@ -69,14 +69,19 @@ function logout() {
 
 function clickHandler() {
   const currentTime = Date.now();
-  if (currentTime - lastClickTime < 1000) {
-    comboActive = true;
-    clearTimeout(comboTimeout);
-    comboTimeout = setTimeout(() => {
-      comboActive = false;
-      comboDisplay.style.opacity = '0';
-    }, 3000);
-    showCombo();
+  if (currentTime - lastClickTime < 500) {
+    clickStreak++;
+    if (clickStreak >= 5) {
+      comboActive = true;
+      clearTimeout(comboTimeout);
+      comboTimeout = setTimeout(() => {
+        comboActive = false;
+      }, 3000);
+      showCombo();
+      clickStreak = 0;
+    }
+  } else {
+    clickStreak = 0;
   }
   lastClickTime = currentTime;
 
@@ -111,11 +116,13 @@ function showFloatingNumber(points) {
 }
 
 function showCombo() {
-  comboDisplay.textContent = 'Комбо x2!';
-  comboDisplay.style.opacity = '1';
-  comboDisplay.classList.add('animate-combo');
+  const comboElement = document.createElement('div');
+  comboElement.className = 'floating-combo';
+  comboElement.textContent = 'Комбо x2!';
+  document.body.appendChild(comboElement);
+
   setTimeout(() => {
-    comboDisplay.classList.remove('animate-combo');
+    document.body.removeChild(comboElement);
   }, 1000);
 }
 
