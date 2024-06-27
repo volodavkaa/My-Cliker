@@ -61,6 +61,7 @@ function login() {
 }
 
 
+
 function showGame() {
     authSection.style.display = 'none';
     gameSection.style.display = 'block';
