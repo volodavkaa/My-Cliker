@@ -21,15 +21,18 @@
       />
       <button id="login" class="btn">Увійти</button>
     </div>
+
+    <div id="combo-display" class="combo-display"></div>
+
     <div id="game" class="container" style="display: none">
       <div class="header">
         <div id="burger-menu" class="burger-menu">
-          <div class="burger-icon">
+          <div class="burger-icon" id="burger-icon">
             <div class="line"></div>
             <div class="line"></div>
             <div class="line"></div>
           </div>
-          <div class="user-list">
+          <div class="user-list" id="user-list">
             <h3>Список всіх користувачів</h3>
             <ul id="all-users"></ul>
           </div>
@@ -40,8 +43,8 @@
         <button id="click-button" class="btn btn-large">Клікай мене!</button>
         <p>Кількість кліків: <span id="click-count">0</span></p>
       </div>
-      <div id="floating-numbers"></div>
 
+      <div id="floating-numbers"></div>
       <div id="stats">
         <h2>Таблиця рекордів (Топ 10)</h2>
         <table id="user-stats">
