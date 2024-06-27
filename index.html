@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сучасний Клікер-гра</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="auth" class="container">
+      <h2>Авторизація</h2>
+      <input
+        type="text"
+        id="username"
+        class="input-field"
+        placeholder="Введіть ваше ім'я"
+      />
+      <button id="login" class="btn">Увійти</button>
+    </div>
+    <div id="game" class="container" style="display: none">
+      <div class="header">
+        <div id="burger-menu" class="burger-menu">
+          <div class="burger-icon">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+          <div class="user-list">
+            <h3>Список всіх користувачів</h3>
+            <ul id="all-users"></ul>
+          </div>
+        </div>
+        <h1>Вітаємо, <span id="user-name"></span>!</h1>
+      </div>
+      <div id="clicker">
+        <button id="click-button" class="btn btn-large">Клікай мене!</button>
+        <p>Кількість кліків: <span id="click-count">0</span></p>
+      </div>
+      <div id="floating-numbers"></div>
+
+      <div id="stats">
+        <h2>Таблиця рекордів (Топ 10)</h2>
+        <table id="user-stats">
+          <thead>
+            <tr>
+              <th>Користувач</th>
+              <th>Кількість кліків</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <button id="logout" class="btn btn-logout">Вийти</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

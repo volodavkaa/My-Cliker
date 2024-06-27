@@ -1,0 +1,249 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+}
+
+h1, h2 {
+    color: #007BFF;
+}
+
+.input-field {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.btn {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-large {
+    font-size: 20px;
+    padding: 15px 30px;
+}
+
+.btn-logout {
+    background-color: #dc3545;
+}
+
+.btn-logout:hover {
+    background-color: #c82333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+table th {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Бургер-меню */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.burger-menu {
+    position: relative;
+}
+
+.burger-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #007BFF;
+    border-radius: 5px;
+}
+
+.burger-icon .line {
+    width: 20px;
+    height: 2px;
+    background-color: #fff;
+}
+
+.user-list {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 200px;
+    background-color: #f0f0f0;
+    border-left: 1px solid #ccc;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: left 0.3s ease;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.burger-menu:hover .user-list {
+    display: flex;
+    left: calc(100% + 10px);
+}
+
+.user-list h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.user-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+
+.user-list ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.user-list ul li:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+/* styles.css */
+
+/* Всі попередні стилі */
+
+#floating-numbers {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.floating-number {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 1;
+    animation: fly 1s forwards;
+}
+
+@keyframes fly {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
+/* Додаткові стилі для анімації кольорів */
+.floating-number.color1 { color: red; }
+.floating-number.color2 { color: orange; }
+.floating-number.color3 { color: yellow; }
+.floating-number.color4 { color: green; }
+.floating-number.color5 { color: blue; }
+/* Стилі для кнопки */
+.btn-large {
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.btn-large:active {
+    transform: scale(0.95);
+}
+
+.btn-large:hover {
+    background-color: #0056b3;
+}
+
+/* Вилітаючі числа */
+#floating-numbers {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.floating-number {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 1;
+    animation: fly 1s forwards;
+}
+
+@keyframes fly {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
+/* Додаткові стилі для анімації кольорів */
+.floating-number.color1 { color: red; }
+.floating-number.color2 { color: orange; }
+.floating-number.color3 { color: yellow; }
+.floating-number.color4 { color: green; }
+.floating-number.color5 { color: blue; }
