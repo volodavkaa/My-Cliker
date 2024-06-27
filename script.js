@@ -1,131 +1,200 @@
-const users = JSON.parse(localStorage.getItem('users')) || {};
+let users = JSON.parse(localStorage.getItem('users')) || {};
 let currentUser = null;
 let userClickCount = 0;
-let globalClickCount = 0;
-let comboActive = false;
-let lastClickTime = 0;
-let comboTimeout = null;
-let clickStreak = 0;
-
-const authSection = document.getElementById('auth');
-const gameSection = document.getElementById('game');
-const userNameDisplay = document.getElementById('user-name');
 const clickButton = document.getElementById('click-button');
 const clickCountDisplay = document.getElementById('click-count');
-const userStatsTableBody = document.querySelector('#user-stats tbody');
-const allUsersList = document.getElementById('all-users');
-const usernameInput = document.getElementById('username');
+const floatingNumbersContainer = document.getElementById('floating-numbers');
 const loginButton = document.getElementById('login');
 const logoutButton = document.getElementById('logout');
-const floatingNumbersContainer = document.getElementById('floating-numbers');
+const usernameInput = document.getElementById('username');
+const authContainer = document.getElementById('auth');
+const gameContainer = document.getElementById('game');
+const userNameDisplay = document.getElementById('user-name');
+const userStatsTable = document.getElementById('user-stats').querySelector('tbody');
+const allUsersList = document.getElementById('all-users');
+const burgerMenu = document.getElementById('burger-menu');
 
-function updateStats() {
-  userStatsTableBody.innerHTML = '';
-  allUsersList.innerHTML = '';
-
-  const sortedUsers = Object.entries(users).sort((a, b) => b[1].clicks - a[1].clicks);
-
-  sortedUsers.slice(0, 10).forEach(([name, stats]) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${name}</td><td>${stats.clicks}</td>`;
-    userStatsTableBody.appendChild(row);
-  });
-
-  sortedUsers.forEach(([name]) => {
-    const listItem = document.createElement('li');
-    listItem.textContent = name;
-    allUsersList.appendChild(listItem);
-  });
-}
+let comboActive = false;
+let comboMultiplier = 1;
+let comboTimeout;
 
 function login() {
   const username = usernameInput.value.trim();
-  if (!username) {
-    alert("Введіть ім'я користувача!");
-    return;
+  if (username) {
+    currentUser = username;
+    if (!users[username]) {
+      users[username] = { clicks: 0 };
+    }
+    localStorage.setItem('users', JSON.stringify(users));
+    updateUI();
   }
-  if (!users[username]) {
-    users[username] = { clicks: 0 };
-  }
-  currentUser = username;
-  userClickCount = 0;
-  localStorage.setItem('users', JSON.stringify(users));
-  showGame();
-}
-
-function showGame() {
-  authSection.style.display = 'none';
-  gameSection.style.display = 'block';
-  userNameDisplay.textContent = currentUser;
-  clickCountDisplay.textContent = users[currentUser].clicks;
-  updateStats();
 }
 
 function logout() {
   currentUser = null;
-  authSection.style.display = 'block';
-  gameSection.style.display = 'none';
+  updateUI();
 }
 
-function clickHandler() {
-  const currentTime = Date.now();
-  if (currentTime - lastClickTime < 500) {
-    clickStreak++;
-    if (clickStreak >= 5) {
-      comboActive = true;
-      clearTimeout(comboTimeout);
-      comboTimeout = setTimeout(() => {
-        comboActive = false;
-      }, 3000);
-      showCombo();
-      clickStreak = 0;
-    }
+function updateUI() {
+  if (currentUser) {
+    authContainer.style.display = 'none';
+    gameContainer.style.display = 'block';
+    userNameDisplay.textContent = currentUser;
+    clickCountDisplay.textContent = users[currentUser].clicks;
+    updateStats();
   } else {
-    clickStreak = 0;
+    authContainer.style.display = 'block';
+    gameContainer.style.display = 'none';
   }
-  lastClickTime = currentTime;
+}
 
-  const points = comboActive ? 2 : 1;
-  users[currentUser].clicks += points;
-  clickCountDisplay.textContent = users[currentUser].clicks;
-  localStorage.setItem('users', JSON.stringify(users));
-  updateStats();
-  userClickCount += points;
-  showFloatingNumber(points);
-  animateButton();
+function updateStats() {
+  const sortedUsers = Object.entries(users).sort((a, b) => b[1].clicks - a[1].clicks);
+  userStatsTable.innerHTML = '';
+  sortedUsers.slice(0, 10).forEach(([username, data]) => {
+    const row = document.createElement('tr');
+    const nameCell = document.createElement('td');
+    const clicksCell = document.createElement('td');
+    nameCell.textContent = username;
+    clicksCell.textContent = data.clicks;
+    row.appendChild(nameCell);
+    row.appendChild(clicksCell);
+    userStatsTable.appendChild(row);
+  });
+  updateAllUsersList();
+}
+
+function updateAllUsersList() {
+  allUsersList.innerHTML = '';
+  Object.keys(users).forEach((username) => {
+    const userItem = document.createElement('li');
+    userItem.textContent = username;
+    allUsersList.appendChild(userItem);
+  });
 }
 
 function animateButton() {
-  clickButton.style.transform = 'scale(0.95)';
+  clickButton.classList.add('active');
   setTimeout(() => {
-    clickButton.style.transform = 'scale(1)';
+    clickButton.classList.remove('active');
   }, 100);
 }
 
-function showFloatingNumber(points) {
-  globalClickCount += 1;
-  const numberElement = document.createElement('div');
-  numberElement.className = `floating-number color${(globalClickCount % 5) + 1}`;
-  numberElement.textContent = `+${points}`;
-  numberElement.style.left = `${Math.random() * 80 + 10}%`;
-  floatingNumbersContainer.appendChild(numberElement);
-
+function showFloatingNumber(number) {
+  const floatingNumber = document.createElement('div');
+  floatingNumber.textContent = `+${number}`;
+  floatingNumber.className = 'floating-number';
+  floatingNumber.style.left = `${Math.random() * 80 + 10}%`;
+  floatingNumber.style.top = `${Math.random() * 50 + 25}%`;
+  floatingNumbersContainer.appendChild(floatingNumber);
   setTimeout(() => {
-    floatingNumbersContainer.removeChild(numberElement);
+    floatingNumbersContainer.removeChild(floatingNumber);
+    moveFloatingNumberToTable(number);
   }, 1000);
 }
 
-function showCombo() {
-  const comboElement = document.createElement('div');
-  comboElement.className = 'floating-combo';
-  comboElement.textContent = 'Комбо x2!';
-  document.body.appendChild(comboElement);
+function moveFloatingNumberToTable(number) {
+  const movingNumber = document.createElement('div');
+  movingNumber.textContent = `+${number}`;
+  movingNumber.className = 'moving-number';
+  document.body.appendChild(movingNumber);
+
+  const table = document.getElementById('user-stats');
+  const rect = table.getBoundingClientRect();
+  const endX = rect.left + rect.width / 2;
+  const endY = rect.top;
+
+  movingNumber.style.left = `${window.innerWidth / 2}px`;
+  movingNumber.style.top = `${window.innerHeight / 2}px`;
 
   setTimeout(() => {
-    document.body.removeChild(comboElement);
+    movingNumber.style.left = `${endX}px`;
+    movingNumber.style.top = `${endY}px`;
+  }, 10);
+
+  setTimeout(() => {
+    document.body.removeChild(movingNumber);
+    users[currentUser].clicks += number;
+    updateStatsWithAnimation(currentUser, number);
+    localStorage.setItem('users', JSON.stringify(users));
   }, 1000);
+}
+
+function updateStatsWithAnimation(username, number) {
+  const rows = userStatsTable.getElementsByTagName('tr');
+  for (let row of rows) {
+    if (row.firstChild.textContent === username) {
+      const clicksCell = row.lastChild;
+      const currentClicks = parseInt(clicksCell.textContent, 10);
+      const newClicks = currentClicks + number;
+      clicksCell.textContent = newClicks;
+      clicksCell.classList.add('animated-update');
+      setTimeout(() => {
+        clicksCell.classList.remove('animated-update');
+      }, 500);
+      break;
+    }
+  }
+}
+
+
+function clickHandler() {
+  userClickCount += comboMultiplier;
+  showFloatingNumber(comboMultiplier);
+  animateButton();
+  activateCombo();
 }
 
 loginButton.addEventListener('click', login);
 logoutButton.addEventListener('click', logout);
 clickButton.addEventListener('click', clickHandler);
+
+function activateCombo() {
+  if (comboActive) {
+    clearTimeout(comboTimeout);
+  } else {
+    comboActive = true;
+    determineComboMultiplier();
+    showComboIndicator();
+  }
+
+  comboTimeout = setTimeout(() => {
+    comboActive = false;
+    comboMultiplier = 1;
+    hideComboIndicator();
+  }, 3000);
+}
+
+function determineComboMultiplier() {
+  const randomValue = Math.random();
+  if (randomValue < 0.01) {
+    comboMultiplier = 3;
+  } else if (randomValue < 0.1) {
+    comboMultiplier = 2;
+  } else {
+    comboMultiplier = 1;
+  }
+}
+
+function showComboIndicator() {
+  const comboDisplay = document.getElementById('combo-display');
+  comboDisplay.textContent = `x${comboMultiplier}`;
+  comboDisplay.style.display = 'block';
+  comboDisplay.classList.add('active');
+}
+
+function hideComboIndicator() {
+  const comboDisplay = document.getElementById('combo-display');
+  comboDisplay.style.display = 'none';
+  comboDisplay.classList.remove('active');
+}
+
+burgerMenu.addEventListener('click', () => {
+  const userList = burgerMenu.querySelector('.user-list');
+  userList.classList.toggle('open');
+  if (userList.classList.contains('open')) {
+    userList.style.animation = 'slideIn 0.5s forwards';
+  } else {
+    userList.style.animation = 'slideOut 0.5s forwards';
+  }
+});
