@@ -164,8 +164,27 @@ table tbody tr:nth-child(even) {
   position: absolute;
   font-size: 20px;
   font-weight: bold;
-  color: #007BFF;
   animation: floatUp 1s ease-out;
+}
+
+.floating-number.red {
+  color: red;
+}
+
+.floating-number.green {
+  color: green;
+}
+
+.floating-number.blue {
+  color: blue;
+}
+
+.floating-number.orange {
+  color: orange;
+}
+
+.floating-number.purple {
+  color: purple;
 }
 
 @keyframes floatUp {
@@ -176,38 +195,6 @@ table tbody tr:nth-child(even) {
   100% {
     opacity: 0;
     transform: translateY(-50px);
-  }
-}
-
-/* Стилі для комбо */
-#combo-display {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #ff5722, #ff9800);
-  color: white;
-  display: none;
-  z-index: 1000;
-  text-align: center;
-}
-
-#combo-display.active {
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 
@@ -225,25 +212,6 @@ table tbody tr:nth-child(even) {
   }
   100% {
     transform: scale(1);
-  }
-}
-
-/* Анімація бургер-меню */
-@keyframes slideIn {
-  from {
-    left: 100%;
-  }
-  to {
-    left: calc(100% + 10px);
-  }
-}
-
-@keyframes slideOut {
-  from {
-    left: calc(100% + 10px);
-  }
-  to {
-    left: 100%;
   }
 }
 
