@@ -10,7 +10,6 @@
       rel="stylesheet"
     />
   </head>
-
   <body>
     <div id="auth" class="container">
       <h2>Авторизація</h2>
@@ -30,7 +29,7 @@
             <div class="line"></div>
             <div class="line"></div>
           </div>
-          <div class="user-list">
+          <div class="user-list" id="user-list">
             <h3>Список всіх користувачів</h3>
             <ul id="all-users"></ul>
           </div>
@@ -42,7 +41,6 @@
         <p>Кількість кліків: <span id="click-count">0</span></p>
       </div>
       <div id="floating-numbers"></div>
-
       <div id="stats">
         <h2>Таблиця рекордів (Топ 10)</h2>
         <table id="user-stats">
@@ -57,9 +55,7 @@
       </div>
       <button id="logout" class="btn btn-logout">Вийти</button>
     </div>
-
     <div id="combo-display" class="combo-display"></div>
-
     <script src="script.js"></script>
   </body>
 </html>

@@ -80,6 +80,19 @@ table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+.animated-cell {
+  animation: highlight-cell 1s ease-in-out;
+}
+
+@keyframes highlight-cell {
+  0% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 /* Бургер-меню */
 .header {
   display: flex;
@@ -95,44 +108,53 @@ table tbody tr:nth-child(even) {
 .burger-icon {
   width: 30px;
   height: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
   cursor: pointer;
-  padding: 5px;
-  background-color: #007BFF;
-  border-radius: 5px;
+  position: relative;
+  z-index: 20;
 }
 
-.burger-icon .line {
-  width: 20px;
-  height: 2px;
-  background-color: #fff;
+.burger-icon::before, .burger-icon::after, .burger-icon div {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  background-color: #007BFF;
+  margin: 5px 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.burger-menu.open .burger-icon::before {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.burger-menu.open .burger-icon::after {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.burger-menu.open .burger-icon div {
+  opacity: 0;
 }
 
 .user-list {
   position: absolute;
-  top: 0;
-  left: 100%;
+  top: 100%;
+  left: 0;
   width: 200px;
   background-color: #ffffff;
-  border-left: 1px solid #ccc;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 10px;
   display: none;
-  flex-direction: column;
-  align-items: center;
   z-index: 10;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .user-list.open {
-  display: flex;
-}
-
-.user-list h3 {
-  color: #007BFF;
-  margin: 0 0 10px;
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .user-list ul {
@@ -142,7 +164,12 @@ table tbody tr:nth-child(even) {
 }
 
 .user-list li {
-  padding: 5px 0;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-list li:last-child {
+  border-bottom: none;
 }
 
 .user-list li:hover {
@@ -150,21 +177,13 @@ table tbody tr:nth-child(even) {
   cursor: pointer;
 }
 
-/* Плаваючі числа */
-#floating-numbers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
+/* Плаваючі номери */
 .floating-number {
   position: absolute;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  animation: floatUp 1s ease-out;
+  opacity: 1;
+  animation: move-to-table 2s ease-in-out forwards;
 }
 
 .floating-number.red {
@@ -187,18 +206,17 @@ table tbody tr:nth-child(even) {
   color: purple;
 }
 
-@keyframes floatUp {
+@keyframes move-to-table {
   0% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
   100% {
     opacity: 0;
-    transform: translateY(-50px);
+    transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px));
   }
 }
 
-/* Динамічна кнопка */
 #click-button.active {
   animation: bounce 0.3s;
 }
@@ -215,26 +233,15 @@ table tbody tr:nth-child(even) {
   }
 }
 
-/* Плавна анімація додавання числа до таблиці */
-.moving-number {
-  position: absolute;
-  font-size: 20px;
+.combo-display {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  font-size: 24px;
   font-weight: bold;
-  color: #007BFF;
-  transition: all 1s ease;
-}
-
-.animated-update {
-  animation: flash 0.5s;
-}
-
-@keyframes flash {
-  0% {
-    background-color: #007BFF;
-    color: #fff;
-  }
-  100% {
-    background-color: transparent;
-    color: #000;
-  }
+  color: white;
+  border-radius: 5px;
+  z-index: 1000;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,154,0,1) 33%, rgba(255,255,0,1) 66%, rgba(0,255,0,1) 100%);
 }
